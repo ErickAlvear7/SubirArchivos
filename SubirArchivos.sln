@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.35325.158
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubirArchivos", "SubirArchivos\SubirArchivos.csproj", "{CED90CE9-802A-4A70-8FDD-2D3C6A2A012E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CED90CE9-802A-4A70-8FDD-2D3C6A2A012E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CED90CE9-802A-4A70-8FDD-2D3C6A2A012E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CED90CE9-802A-4A70-8FDD-2D3C6A2A012E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CED90CE9-802A-4A70-8FDD-2D3C6A2A012E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {14B8CC48-65C5-42EA-97F9-38F93768C732}
+	EndGlobalSection
+EndGlobal
