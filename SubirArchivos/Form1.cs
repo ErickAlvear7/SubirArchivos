@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.IO;
@@ -17,9 +18,28 @@ namespace SubirArchivos
         string rutaLog = "";
         string name = "";
         string _mensaje = "";
+        DataSet dtx = new DataSet();
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void txtRutaArchivo_MouseClick(object sender, MouseEventArgs e)
+        {
+            DateTime fechaname = DateTime.Now;
+            name = fechaname.Day.ToString("00") + fechaname.Month.ToString("00") + fechaname.Year.ToString("0000") + ".csv";
+
+            openDialog.InitialDirectory = @"C:\subir";
+            openDialog.RestoreDirectory = true;
+            openDialog.FilterIndex = 1;
+            openDialog.Filter = "csv files (*.csv)|*.csv";
+            openDialog.FileName = "VSP_" + name;
+
+            if(openDialog.ShowDialog() == DialogResult.OK)
+            {
+                txtRutaArchivo.Text = openDialog.FileName;
+            }
+
         }
 
         private void btnProcesar_Click(object sender, EventArgs e)
@@ -31,15 +51,15 @@ namespace SubirArchivos
                 string _resultado = new Conexion().FunDesactivarTitulares(coneccionString);
 
                 //string rutaCompleta = "D:\\subir\\VSP_23102024.csv";
-                DateTime fechaname = DateTime.Now;
-                name = fechaname.Day.ToString("00") + fechaname.Month.ToString("00") + fechaname.Year.ToString("0000") + ".csv";
-                string rutaCompleta = rutaarchivo + "\\" + "VSP_" + name;
-                rutaLog = rutaarchivo + "\\" + "LOG_" + fechaname.Day.ToString("00") + fechaname.Month.ToString("00") + fechaname.Year.ToString("0000") + ".txt";
+                //DateTime fechaname = DateTime.Now;
+                //name = fechaname.Day.ToString("00") + fechaname.Month.ToString("00") + fechaname.Year.ToString("0000") + ".csv";
+                //string rutaCompleta = rutaarchivo + "\\" + "VSP_" + name;
+                //rutaLog = rutaarchivo + "\\" + "LOG_" + fechaname.Day.ToString("00") + fechaname.Month.ToString("00") + fechaname.Year.ToString("0000") + ".txt";
 
-                if (File.Exists(rutaCompleta))
+                if (File.Exists(txtRutaArchivo.Text))
                 {
-                    string ext = Path.GetExtension(rutaCompleta);
-                    using (StreamReader Leer = new StreamReader(rutaCompleta))
+                    //string ext = Path.GetExtension(rutaCompleta);
+                    using (StreamReader Leer = new StreamReader(txtRutaArchivo.Text))
                     {
                         String Linea;
                         int next = 0;
@@ -51,12 +71,19 @@ namespace SubirArchivos
                             {
                                 string[] campos = Linea.Split(char.Parse(delimitado));
                                 //new Conexion().funGetCargasFTP(next, 119, campos[0].ToString(), coneccionString);
-                                FunGrabarData(campos);
+                                    FunGrabarData(campos);
                             }
                             next++;
                         }
                         Leer.Close();
-                        MessageBox.Show("Filas Insertadas " + next.ToString());
+
+                        //MessageBox.Show("Filas Insertadas " + next.ToString());
+                        richTextBox.AppendText(next.ToString());
+                        dtx= new Conexion().FunEstadoTitulares(coneccionString);
+                        string estActivo = dtx.Tables[0].Rows[0][0].ToString();
+                        richTextBox1.AppendText(estActivo);
+                        string estInactivo = dtx.Tables[1].Rows[0][0].ToString();
+                        richTextBox2.AppendText(estInactivo);
                     }
 
                     FunEnviarMail(rutaLog);
@@ -250,6 +277,11 @@ namespace SubirArchivos
                 }
                 return _mensaje;
             }
+        }
+
+        private void ProgressBar1_Click(object sender, EventArgs e)
+        {
+            BackgroundWorker bg = new BackgroundWorker();
         }
     }
 }

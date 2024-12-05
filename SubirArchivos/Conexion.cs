@@ -111,6 +111,34 @@ namespace SubirArchivos
                 return ex.ToString();
             }
         }
-       
+
+        public DataSet FunEstadoTitulares(string conexion)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(conexion))
+                {
+                    using (SqlCommand comm = new SqlCommand())
+                    {
+                        comm.Connection = con;
+                        comm.CommandType = CommandType.StoredProcedure;
+                        comm.CommandText = "sp_ConsultaDatos";
+                        comm.Parameters.AddWithValue("@in_codigo", 0);
+                        comm.Parameters.AddWithValue("@in_tCodigo", "");
+                        comm.Parameters.AddWithValue("@in_tipo", 179);
+
+                        con.Open();
+                        da.SelectCommand = comm;
+                        da.Fill(ds);
+                    }
+                }
+                return ds;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
