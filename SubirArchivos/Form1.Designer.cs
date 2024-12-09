@@ -74,7 +74,6 @@ namespace SubirArchivos
             this.txtRutaArchivo.Name = "txtRutaArchivo";
             this.txtRutaArchivo.Size = new System.Drawing.Size(478, 45);
             this.txtRutaArchivo.TabIndex = 1;
-            this.txtRutaArchivo.Text = "6";
             this.txtRutaArchivo.MouseClick += new System.Windows.Forms.MouseEventHandler(this.txtRutaArchivo_MouseClick);
             // 
             // openDialog
