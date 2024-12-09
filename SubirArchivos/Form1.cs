@@ -22,7 +22,7 @@ namespace SubirArchivos
         string name = "";
         string _mensaje = "";
         DataSet dtx = new DataSet();
-        int nuevo = 0, registros = 0, totalprocesar = 0, progreso = 0, porciento = 0, _msg0 = 0, contador = 0, _msg1 = 0, _msg2 = 0, _msg3 = 0, _msg4 = 0, _msg5 = 0, _msg6 = 0;
+        int next=0,nuevo = 0, registros = 0, totalprocesar = 0, progreso = 0, porciento = 0, _msg0 = 0, contador = 0, _msg1 = 0, _msg2 = 0, _msg3 = 0, _msg4 = 0, _msg5 = 0, _msg6 = 0;
         DataTable dtbNew = new DataTable();
         DataTable dtbdatos = new DataTable();
         DataSet dts = new DataSet();
@@ -34,15 +34,8 @@ namespace SubirArchivos
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            /*dtbNew.Columns.Add("Columna1");
-            dtbNew.Columns.Add("Columna2);
-            dtbNew.Columns.Add("Columna3");
-            dtbNew.Columns.Add("Columna4");
-            dtbNew.Columns.Add("Columna5");
-            dtbNew.Columns.Add("Columna6");
-            */
 
-            for (int col = 0; col < 17; col++)
+            for (int col = 0; col < 19; col++)
                 dtbNew.Columns.Add(new DataColumn("Column" + (col + 1).ToString()));
         }
         private void txtRutaArchivo_MouseClick(object sender, MouseEventArgs e)
@@ -111,19 +104,19 @@ namespace SubirArchivos
                             bg.RunWorkerAsync();
                         }
 
-                            //MessageBox.Show("Filas Insertadas " + next.ToString());
-                        txtInsert.Text = next.ToString();
-                        dtx= new Conexion().FunEstadoTitulares(coneccionString);
-                        string estActivo = dtx.Tables[0].Rows[0][0].ToString();
-                        txtActivos.Text = estActivo;
-                        int sumaActivos = int.Parse(dtx.Tables[0].Rows[0][0].ToString());
-                        string estInactivo = dtx.Tables[1].Rows[0][0].ToString();
-                        txtInactivos.Text = estInactivo;
-                        int Sumainactivos = int.Parse(dtx.Tables[1].Rows[0][0].ToString());
-                        int suma = sumaActivos + Sumainactivos;
-                        string totalbase = Convert.ToString(suma);
-                        txtTotal.Text = totalbase;
-                        txtNuevos.Text = nuevo.ToString();
+                           
+                        //txtInsert.Text = next.ToString();
+                        //dtx= new Conexion().FunEstadoTitulares(coneccionString);
+                        //string estActivo = dtx.Tables[0].Rows[0][0].ToString();
+                        //txtActivos.Text = estActivo;
+                        //int sumaActivos = int.Parse(dtx.Tables[0].Rows[0][0].ToString());
+                        //string estInactivo = dtx.Tables[1].Rows[0][0].ToString();
+                        //txtInactivos.Text = estInactivo;
+                        //int Sumainactivos = int.Parse(dtx.Tables[1].Rows[0][0].ToString());
+                        //int suma = sumaActivos + Sumainactivos;
+                        //string totalbase = Convert.ToString(suma);
+                        //txtTotal.Text = totalbase;
+                        //txtNuevos.Text = nuevo.ToString();
                     }
 
                     //FunEnviarMail(rutaLog);
@@ -327,21 +320,21 @@ namespace SubirArchivos
                 string Cedula = drfila[0].ToString().TrimStart().TrimEnd();
                 string Nombre1 = drfila[1].ToString().TrimStart().TrimEnd();
                 string Nombre2 = drfila[2].ToString().TrimStart().TrimEnd();
-                string Apellido1 = drfila[0].ToString().TrimStart().TrimEnd();
-                string Apellido2 = drfila[0].ToString().TrimStart().TrimEnd();
-                string Genero = drfila[0].ToString().TrimStart().TrimEnd();
-                string Direccion = drfila[0].ToString().TrimStart().TrimEnd();
-                string Nacimiento = drfila[0].ToString().TrimStart().TrimEnd();
-                string TelCasa = drfila[0].ToString().TrimStart().TrimEnd();
-                string TelOfi = drfila[0].ToString().TrimStart().TrimEnd();
-                string Celular = drfila[0].ToString().TrimStart().TrimEnd();
-                string Email = drfila[0].ToString().TrimStart().TrimEnd();
-                string Tipocliente = drfila[0].ToString().TrimStart().TrimEnd();
-                string Parentesco = drfila[0].ToString().TrimStart().TrimEnd();
-                string FechaIniCober = drfila[0].ToString().TrimStart().TrimEnd();
-                string FechaFinCober = drfila[0].ToString().TrimStart().TrimEnd();
-                string TipoPolisa = drfila[0].ToString().TrimStart().TrimEnd();
-                string Producto = drfila[0].ToString().TrimStart().TrimEnd();
+                string Apellido1 = drfila[3].ToString().TrimStart().TrimEnd();
+                string Apellido2 = drfila[4].ToString().TrimStart().TrimEnd();
+                string Genero = drfila[5].ToString().TrimStart().TrimEnd();
+                string Direccion = drfila[6].ToString().TrimStart().TrimEnd();
+                string Nacimiento = drfila[7].ToString().TrimStart().TrimEnd();
+                string TelCasa = drfila[8].ToString().TrimStart().TrimEnd();
+                string TelOfi = drfila[9].ToString().TrimStart().TrimEnd();
+                string Celular = drfila[10].ToString().TrimStart().TrimEnd();
+                string Email = drfila[11].ToString().TrimStart().TrimEnd();
+                string Tipocliente = drfila[12].ToString().TrimStart().TrimEnd();
+                string Parentesco = drfila[13].ToString().TrimStart().TrimEnd();
+                string FechaIniCober = drfila[14].ToString().TrimStart().TrimEnd();
+                string FechaFinCober = drfila[15].ToString().TrimStart().TrimEnd();
+                string TipoPolisa = drfila[16].ToString().TrimStart().TrimEnd();
+                string Producto = drfila[17].ToString().TrimStart().TrimEnd();
 
                 string nombrescompletos = Nombre1 + " " + Nombre2 + " " + Apellido1 + " " + Apellido2;
 
@@ -413,7 +406,7 @@ namespace SubirArchivos
                 ProgressBar1.Maximum = 100;
                 if (e.ProgressPercentage > 100)
                 {
-                    LblProgreso.Text = "100%";
+                    //LblProgreso.Text = "100%";
                     ProgressBar1.Value = ProgressBar1.Maximum;
                 }
                 else
@@ -431,7 +424,7 @@ namespace SubirArchivos
                         case 5:
                             if (_msg1 == 0)
                             {
-                                TxtCommandLine.Text += "Generando Consulta para Procesar.." +
+                                TxtCommandLine.Text += "Insertando datos.." +
                                     Environment.NewLine + Environment.NewLine;
                                 _msg1 = 1;
                             }
@@ -439,42 +432,21 @@ namespace SubirArchivos
                         case 10:
                             if (_msg2 == 0)
                             {
-                                TxtCommandLine.Text += "Procesando Operaciones..." + Environment.NewLine + Environment.NewLine;
+                                TxtCommandLine.Text += "Procesando espere..." + Environment.NewLine + Environment.NewLine;
                                 _msg2 = 1;
                             }
                             break;
-                        case 20:
+                        case 95:
                             if (_msg3 == 0)
                             {
-                                TxtCommandLine.Text += "Validando Datos..." + Environment.NewLine + Environment.NewLine;
-                                _msg3 = 1;
-                            }
-                            break;
-                        case 50:
-                            if (_msg4 == 0)
-                            {
-                                TxtCommandLine.Text += "Calculando espacio en BDD..." + Environment.NewLine + Environment.NewLine;
-                                _msg4 = 1;
-                            }
-                            break;
-                        case 70:
-                            if (_msg5 == 0)
-                            {
-                                TxtCommandLine.Text += "Inciando Registros..." + Environment.NewLine + Environment.NewLine;
-                                _msg5 = 1;
-                            }
-                            break;
-                        case 90:
-                            if (_msg6 == 0)
-                            {
                                 TxtCommandLine.Text += "Espere Finalizando Proceso..." + Environment.NewLine + Environment.NewLine;
-                                _msg6 = 1;
+                                _msg3 = 1;
                             }
                             break;
                     }
                     ProgressBar1.Value = ProgressBar1.Maximum;
                     LblProceso.Text = "Registros " + contador.ToString() + " De " + totalprocesar.ToString();
-                    LblProgreso.Text = Convert.ToString(e.ProgressPercentage) + "%";
+                    //LblProgreso.Text = Convert.ToString(e.ProgressPercentage) + "%";
                     ProgressBar1.Value = e.ProgressPercentage;
 
                     using (Graphics gr = ProgressBar1.CreateGraphics())
@@ -496,8 +468,22 @@ namespace SubirArchivos
         {
             try
             {
-                MessageBox.Show("Se han procesado: " + contador.ToString() + " Registros", "PRESTASALUD ", MessageBoxButtons.OK);
-                LblProgreso.Text = "%";
+
+                txtInsert.Text = contador.ToString();
+                dtx = new Conexion().FunEstadoTitulares(coneccionString);
+                string estActivo = dtx.Tables[0].Rows[0][0].ToString();
+                txtActivos.Text = estActivo;
+                int sumaActivos = int.Parse(dtx.Tables[0].Rows[0][0].ToString());
+                string estInactivo = dtx.Tables[1].Rows[0][0].ToString();
+                txtInactivos.Text = estInactivo;
+                int Sumainactivos = int.Parse(dtx.Tables[1].Rows[0][0].ToString());
+                int suma = sumaActivos + Sumainactivos;
+                string totalbase = Convert.ToString(suma);
+                txtTotal.Text = totalbase;
+                txtNuevos.Text = nuevo.ToString();
+
+                MessageBox.Show("Se han procesado: " + contador.ToString() + " Registros","SALUD Y VIDA PROTEGIDA", MessageBoxButtons.OK);
+                //LblProgreso.Text = "%";
                 ProgressBar1.Value = 0;
                 bg.DoWork -= backgroundWorker1_DoWork;
                 bg.RunWorkerCompleted -= backgroundWorker1_RunWorkerCompleted;
