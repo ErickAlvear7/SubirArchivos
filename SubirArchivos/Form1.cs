@@ -436,10 +436,10 @@ namespace SubirArchivos
                                 _msg2 = 1;
                             }
                             break;
-                        case 95:
+                        case 90:
                             if (_msg3 == 0)
                             {
-                                TxtCommandLine.Text += "Espere Finalizando Proceso..." + Environment.NewLine + Environment.NewLine;
+                                TxtCommandLine.Text += "Finalizando Proceso..." + Environment.NewLine + Environment.NewLine;
                                 _msg3 = 1;
                             }
                             break;
