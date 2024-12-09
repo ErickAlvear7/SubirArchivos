@@ -139,10 +139,10 @@ namespace SubirArchivos
             // txtInsert
             // 
             this.txtInsert.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtInsert.Location = new System.Drawing.Point(290, 118);
+            this.txtInsert.Location = new System.Drawing.Point(288, 118);
             this.txtInsert.Name = "txtInsert";
             this.txtInsert.ReadOnly = true;
-            this.txtInsert.Size = new System.Drawing.Size(65, 20);
+            this.txtInsert.Size = new System.Drawing.Size(67, 20);
             this.txtInsert.TabIndex = 14;
             this.txtInsert.Text = "0";
             this.txtInsert.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -183,10 +183,10 @@ namespace SubirArchivos
             // txtNuevos
             // 
             this.txtNuevos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtNuevos.Location = new System.Drawing.Point(289, 201);
+            this.txtNuevos.Location = new System.Drawing.Point(288, 201);
             this.txtNuevos.Name = "txtNuevos";
             this.txtNuevos.ReadOnly = true;
-            this.txtNuevos.Size = new System.Drawing.Size(67, 20);
+            this.txtNuevos.Size = new System.Drawing.Size(68, 20);
             this.txtNuevos.TabIndex = 18;
             this.txtNuevos.Text = "0";
             this.txtNuevos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -194,10 +194,10 @@ namespace SubirArchivos
             // txtTotal
             // 
             this.txtTotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTotal.Location = new System.Drawing.Point(489, 207);
+            this.txtTotal.Location = new System.Drawing.Point(488, 207);
             this.txtTotal.Name = "txtTotal";
             this.txtTotal.ReadOnly = true;
-            this.txtTotal.Size = new System.Drawing.Size(67, 20);
+            this.txtTotal.Size = new System.Drawing.Size(68, 20);
             this.txtTotal.TabIndex = 19;
             this.txtTotal.Text = "0";
             this.txtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
