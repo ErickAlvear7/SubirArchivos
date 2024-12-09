@@ -191,7 +191,6 @@ namespace SubirArchivos
             // 
             // txtTotal
             // 
-            this.txtTotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTotal.Location = new System.Drawing.Point(488, 188);
             this.txtTotal.Name = "txtTotal";
             this.txtTotal.ReadOnly = true;
