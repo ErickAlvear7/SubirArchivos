@@ -46,16 +46,19 @@ namespace SubirArchivos
             this.txtNuevos = new System.Windows.Forms.TextBox();
             this.txtTotal = new System.Windows.Forms.TextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.LblProgreso = new System.Windows.Forms.Label();
+            this.TxtCommandLine = new System.Windows.Forms.TextBox();
+            this.LblProceso = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnProcesar
             // 
             this.btnProcesar.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.btnProcesar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnProcesar.Location = new System.Drawing.Point(39, 120);
-            this.btnProcesar.Margin = new System.Windows.Forms.Padding(2);
+            this.btnProcesar.Location = new System.Drawing.Point(52, 148);
+            this.btnProcesar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnProcesar.Name = "btnProcesar";
-            this.btnProcesar.Size = new System.Drawing.Size(110, 66);
+            this.btnProcesar.Size = new System.Drawing.Size(147, 81);
             this.btnProcesar.TabIndex = 0;
             this.btnProcesar.Text = "PROCESAR CSV";
             this.btnProcesar.UseVisualStyleBackColor = false;
@@ -65,11 +68,13 @@ namespace SubirArchivos
             // 
             this.txtRutaArchivo.BackColor = System.Drawing.SystemColors.ControlLight;
             this.txtRutaArchivo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtRutaArchivo.Location = new System.Drawing.Point(197, 46);
+            this.txtRutaArchivo.Location = new System.Drawing.Point(263, 57);
+            this.txtRutaArchivo.Margin = new System.Windows.Forms.Padding(4);
             this.txtRutaArchivo.Multiline = true;
             this.txtRutaArchivo.Name = "txtRutaArchivo";
-            this.txtRutaArchivo.Size = new System.Drawing.Size(359, 37);
+            this.txtRutaArchivo.Size = new System.Drawing.Size(478, 45);
             this.txtRutaArchivo.TabIndex = 1;
+            this.txtRutaArchivo.Text = "6";
             this.txtRutaArchivo.MouseClick += new System.Windows.Forms.MouseEventHandler(this.txtRutaArchivo_MouseClick);
             // 
             // openDialog
@@ -79,71 +84,78 @@ namespace SubirArchivos
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(46, 59);
+            this.label1.Location = new System.Drawing.Point(61, 73);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 13);
+            this.label1.Size = new System.Drawing.Size(78, 16);
             this.label1.TabIndex = 2;
             this.label1.Text = "OPEN FILE:";
             // 
             // ProgressBar1
             // 
-            this.ProgressBar1.Location = new System.Drawing.Point(195, 251);
+            this.ProgressBar1.Location = new System.Drawing.Point(52, 306);
+            this.ProgressBar1.Margin = new System.Windows.Forms.Padding(4);
             this.ProgressBar1.Name = "ProgressBar1";
-            this.ProgressBar1.Size = new System.Drawing.Size(360, 23);
+            this.ProgressBar1.Size = new System.Drawing.Size(480, 28);
             this.ProgressBar1.TabIndex = 3;
-            this.ProgressBar1.Click += new System.EventHandler(this.ProgressBar1_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(191, 120);
+            this.label2.Location = new System.Drawing.Point(255, 148);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 13);
+            this.label2.Size = new System.Drawing.Size(102, 16);
             this.label2.TabIndex = 5;
             this.label2.Text = "Filas Insertadas";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(190, 164);
+            this.label3.Location = new System.Drawing.Point(253, 202);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(85, 13);
+            this.label3.Size = new System.Drawing.Size(106, 16);
             this.label3.TabIndex = 6;
             this.label3.Text = "Titulares Activos";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(376, 166);
+            this.label4.Location = new System.Drawing.Point(501, 204);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(93, 13);
+            this.label4.Size = new System.Drawing.Size(115, 16);
             this.label4.TabIndex = 7;
             this.label4.Text = "Titulares Inactivos";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(300, 258);
+            this.label5.Location = new System.Drawing.Point(400, 318);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(0, 13);
+            this.label5.Size = new System.Drawing.Size(0, 16);
             this.label5.TabIndex = 11;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(379, 208);
+            this.label6.Location = new System.Drawing.Point(505, 256);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(58, 13);
+            this.label6.Size = new System.Drawing.Size(73, 16);
             this.label6.TabIndex = 12;
             this.label6.Text = "Base Total";
             // 
             // txtInsert
             // 
             this.txtInsert.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtInsert.Location = new System.Drawing.Point(288, 118);
+            this.txtInsert.Location = new System.Drawing.Point(384, 145);
+            this.txtInsert.Margin = new System.Windows.Forms.Padding(4);
             this.txtInsert.Name = "txtInsert";
             this.txtInsert.ReadOnly = true;
-            this.txtInsert.Size = new System.Drawing.Size(67, 20);
+            this.txtInsert.Size = new System.Drawing.Size(89, 22);
             this.txtInsert.TabIndex = 14;
             this.txtInsert.Text = "0";
             this.txtInsert.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -152,10 +164,11 @@ namespace SubirArchivos
             // 
             this.txtActivos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.txtActivos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtActivos.Location = new System.Drawing.Point(288, 163);
+            this.txtActivos.Location = new System.Drawing.Point(384, 201);
+            this.txtActivos.Margin = new System.Windows.Forms.Padding(4);
             this.txtActivos.Name = "txtActivos";
             this.txtActivos.ReadOnly = true;
-            this.txtActivos.Size = new System.Drawing.Size(67, 20);
+            this.txtActivos.Size = new System.Drawing.Size(89, 22);
             this.txtActivos.TabIndex = 15;
             this.txtActivos.Text = "0";
             this.txtActivos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -164,10 +177,11 @@ namespace SubirArchivos
             // 
             this.txtInactivos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.txtInactivos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtInactivos.Location = new System.Drawing.Point(488, 163);
+            this.txtInactivos.Location = new System.Drawing.Point(651, 201);
+            this.txtInactivos.Margin = new System.Windows.Forms.Padding(4);
             this.txtInactivos.Name = "txtInactivos";
             this.txtInactivos.ReadOnly = true;
-            this.txtInactivos.Size = new System.Drawing.Size(67, 20);
+            this.txtInactivos.Size = new System.Drawing.Size(89, 22);
             this.txtInactivos.TabIndex = 16;
             this.txtInactivos.Text = "0";
             this.txtInactivos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -175,19 +189,21 @@ namespace SubirArchivos
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(193, 205);
+            this.label7.Location = new System.Drawing.Point(257, 252);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(44, 13);
+            this.label7.Size = new System.Drawing.Size(54, 16);
             this.label7.TabIndex = 17;
             this.label7.Text = "Nuevos";
             // 
             // txtNuevos
             // 
             this.txtNuevos.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtNuevos.Location = new System.Drawing.Point(288, 201);
+            this.txtNuevos.Location = new System.Drawing.Point(384, 247);
+            this.txtNuevos.Margin = new System.Windows.Forms.Padding(4);
             this.txtNuevos.Name = "txtNuevos";
             this.txtNuevos.ReadOnly = true;
-            this.txtNuevos.Size = new System.Drawing.Size(68, 20);
+            this.txtNuevos.Size = new System.Drawing.Size(90, 22);
             this.txtNuevos.TabIndex = 18;
             this.txtNuevos.Text = "0";
             this.txtNuevos.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -195,10 +211,11 @@ namespace SubirArchivos
             // txtTotal
             // 
             this.txtTotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTotal.Location = new System.Drawing.Point(488, 207);
+            this.txtTotal.Location = new System.Drawing.Point(651, 255);
+            this.txtTotal.Margin = new System.Windows.Forms.Padding(4);
             this.txtTotal.Name = "txtTotal";
             this.txtTotal.ReadOnly = true;
-            this.txtTotal.Size = new System.Drawing.Size(68, 20);
+            this.txtTotal.Size = new System.Drawing.Size(90, 22);
             this.txtTotal.TabIndex = 19;
             this.txtTotal.Text = "0";
             this.txtTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -211,12 +228,52 @@ namespace SubirArchivos
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
+            // LblProgreso
+            // 
+            this.LblProgreso.AutoSize = true;
+            this.LblProgreso.Font = new System.Drawing.Font("Arial Black", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblProgreso.ForeColor = System.Drawing.Color.Maroon;
+            this.LblProgreso.Location = new System.Drawing.Point(540, 306);
+            this.LblProgreso.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LblProgreso.Name = "LblProgreso";
+            this.LblProgreso.Size = new System.Drawing.Size(27, 24);
+            this.LblProgreso.TabIndex = 65;
+            this.LblProgreso.Text = "%";
+            this.LblProgreso.Visible = false;
+            // 
+            // TxtCommandLine
+            // 
+            this.TxtCommandLine.BackColor = System.Drawing.SystemColors.InfoText;
+            this.TxtCommandLine.ForeColor = System.Drawing.Color.White;
+            this.TxtCommandLine.Location = new System.Drawing.Point(52, 342);
+            this.TxtCommandLine.Margin = new System.Windows.Forms.Padding(4);
+            this.TxtCommandLine.Multiline = true;
+            this.TxtCommandLine.Name = "TxtCommandLine";
+            this.TxtCommandLine.ReadOnly = true;
+            this.TxtCommandLine.Size = new System.Drawing.Size(695, 117);
+            this.TxtCommandLine.TabIndex = 66;
+            // 
+            // LblProceso
+            // 
+            this.LblProceso.AutoSize = true;
+            this.LblProceso.Font = new System.Drawing.Font("Arial Black", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblProceso.ForeColor = System.Drawing.Color.Teal;
+            this.LblProceso.Location = new System.Drawing.Point(603, 306);
+            this.LblProceso.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LblProceso.Name = "LblProceso";
+            this.LblProceso.Size = new System.Drawing.Size(144, 22);
+            this.LblProceso.TabIndex = 67;
+            this.LblProceso.Text = "Registros 0 de 0";
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ClientSize = new System.Drawing.Size(593, 308);
+            this.ClientSize = new System.Drawing.Size(824, 472);
+            this.Controls.Add(this.LblProceso);
+            this.Controls.Add(this.TxtCommandLine);
+            this.Controls.Add(this.LblProgreso);
             this.Controls.Add(this.txtTotal);
             this.Controls.Add(this.txtNuevos);
             this.Controls.Add(this.label7);
@@ -232,9 +289,10 @@ namespace SubirArchivos
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtRutaArchivo);
             this.Controls.Add(this.btnProcesar);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "CARGAR ARCHIVO";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -259,6 +317,9 @@ namespace SubirArchivos
         private System.Windows.Forms.TextBox txtNuevos;
         private System.Windows.Forms.TextBox txtTotal;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Label LblProgreso;
+        private System.Windows.Forms.TextBox TxtCommandLine;
+        private System.Windows.Forms.Label LblProceso;
     }
 }
 

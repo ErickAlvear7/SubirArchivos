@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Net.Mail;
 using System.Threading;
@@ -19,12 +22,29 @@ namespace SubirArchivos
         string name = "";
         string _mensaje = "";
         DataSet dtx = new DataSet();
-        int nuevo = 0;
+        int nuevo = 0, registros = 0, totalprocesar = 0, progreso = 0, porciento = 0, _msg0 = 0, contador = 0, _msg1 = 0, _msg2 = 0, _msg3 = 0, _msg4 = 0, _msg5 = 0, _msg6 = 0;
+        DataTable dtbNew = new DataTable();
+        DataTable dtbdatos = new DataTable();
+        DataSet dts = new DataSet();
+        DataRow dtr;
+        BackgroundWorker bg = new BackgroundWorker();
         public Form1()
         {
             InitializeComponent();
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            /*dtbNew.Columns.Add("Columna1");
+            dtbNew.Columns.Add("Columna2);
+            dtbNew.Columns.Add("Columna3");
+            dtbNew.Columns.Add("Columna4");
+            dtbNew.Columns.Add("Columna5");
+            dtbNew.Columns.Add("Columna6");
+            */
 
+            for (int col = 0; col < 17; col++)
+                dtbNew.Columns.Add(new DataColumn("Column" + (col + 1).ToString()));
+        }
         private void txtRutaArchivo_MouseClick(object sender, MouseEventArgs e)
         {
             DateTime fechaActual = DateTime.Now;
@@ -72,13 +92,26 @@ namespace SubirArchivos
                             {
                                 string[] campos = Linea.Split(char.Parse(delimitado));
                                 //new Conexion().funGetCargasFTP(next, 119, campos[0].ToString(), coneccionString);
-                                    FunGrabarData(campos);
+                                //FunGrabarData(campos);
+                                dtbdatos = FunGrabarDataTable(campos);
                             }
                             next++;
                         }
+                        dts.Tables.Add(dtbdatos);
                         Leer.Close();
 
-                        //MessageBox.Show("Filas Insertadas " + next.ToString());
+                        if (dts.Tables[0].Rows.Count > 0)
+                        {
+                            registros = dts.Tables[0].Rows.Count;
+
+                            bg.WorkerReportsProgress = true;
+                            bg.ProgressChanged += backgroundWorker1_ProgressChanged;
+                            bg.DoWork += backgroundWorker1_DoWork;
+                            bg.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
+                            bg.RunWorkerAsync();
+                        }
+
+                            //MessageBox.Show("Filas Insertadas " + next.ToString());
                         txtInsert.Text = next.ToString();
                         dtx= new Conexion().FunEstadoTitulares(coneccionString);
                         string estActivo = dtx.Tables[0].Rows[0][0].ToString();
@@ -101,7 +134,19 @@ namespace SubirArchivos
                 MessageBox.Show(ex.ToString());
             }
         }
-
+        private DataTable FunGrabarDataTable(string[] campos)
+        {
+            try
+            {
+                dtr = dtbNew.NewRow();
+                dtbNew.Rows.Add(campos);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "PRESTASALUD", MessageBoxButtons.OK);
+            }
+            return dtbNew;
+        }
         protected void FunGrabarData(string[] strcampos)
         {
             string Cedula = "";
@@ -273,24 +318,205 @@ namespace SubirArchivos
             }
         }
 
-        private void ProgressBar1_Click(object sender, EventArgs e)
-        {
-            BackgroundWorker bg = new BackgroundWorker();
-        }
-
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
+            totalprocesar = dts.Tables[0].Rows.Count;
+            foreach (DataRow drfila in dts.Tables[0].Rows)
+            {
+                contador++;
+                string Cedula = drfila[0].ToString().TrimStart().TrimEnd();
+                string Nombre1 = drfila[1].ToString().TrimStart().TrimEnd();
+                string Nombre2 = drfila[2].ToString().TrimStart().TrimEnd();
+                string Apellido1 = drfila[0].ToString().TrimStart().TrimEnd();
+                string Apellido2 = drfila[0].ToString().TrimStart().TrimEnd();
+                string Genero = drfila[0].ToString().TrimStart().TrimEnd();
+                string Direccion = drfila[0].ToString().TrimStart().TrimEnd();
+                string Nacimiento = drfila[0].ToString().TrimStart().TrimEnd();
+                string TelCasa = drfila[0].ToString().TrimStart().TrimEnd();
+                string TelOfi = drfila[0].ToString().TrimStart().TrimEnd();
+                string Celular = drfila[0].ToString().TrimStart().TrimEnd();
+                string Email = drfila[0].ToString().TrimStart().TrimEnd();
+                string Tipocliente = drfila[0].ToString().TrimStart().TrimEnd();
+                string Parentesco = drfila[0].ToString().TrimStart().TrimEnd();
+                string FechaIniCober = drfila[0].ToString().TrimStart().TrimEnd();
+                string FechaFinCober = drfila[0].ToString().TrimStart().TrimEnd();
+                string TipoPolisa = drfila[0].ToString().TrimStart().TrimEnd();
+                string Producto = drfila[0].ToString().TrimStart().TrimEnd();
 
+                string nombrescompletos = Nombre1 + " " + Nombre2 + " " + Apellido1 + " " + Apellido2;
+
+                if (Cedula == "")
+                {
+                    FunCrearTXT(rutaLog, "SIN CEDULA", nombrescompletos, "CAMPO CEDULA VACIO");
+                    return;
+                }
+
+                int continuar = 1;
+
+                int carcater = Cedula.Length;
+                if (carcater == 9)
+                {
+                    Cedula = '0' + Cedula;
+                }
+                int carcac = Celular.Length;
+                if (carcac == 9)
+                {
+                    Celular = '0' + Celular;
+                }
+
+                if (carcater == 0)
+                {
+                    continuar = 0;
+                }
+
+                DataSet ds = new Conexion().FunConsultarId(Producto, coneccionString);
+                int codProd = int.Parse(ds.Tables[0].Rows[0][0].ToString());
+
+                if (codProd == 0)
+                {
+                    continuar = 0;
+                }
+
+                if (continuar == 1)
+                {
+                    string _respuesta = new Conexion().InsertPersona(Cedula, Nombre1, Nombre2, Apellido1, Apellido2, Genero, Direccion,
+                            Nacimiento, TelCasa, TelOfi, Celular, Email, Tipocliente, Parentesco, FechaIniCober, FechaFinCober, TipoPolisa, codProd, coneccionString);
+
+                    if (_respuesta != "NUEVO" || _respuesta != "ACTUALIZADO")
+                    {
+                        FunCrearTXT(rutaLog, Cedula, nombrescompletos, _respuesta);
+                    }
+
+                    if (_respuesta == "NUEVO")
+                    {
+                        nuevo++;
+                    }
+
+                }
+                progreso++;
+                porciento = Convert.ToInt16((((double)progreso / (double)totalprocesar) * 100.00));
+                Thread.Sleep(5);
+                bg.ReportProgress(porciento);
+            }
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            try
+            {
+                ProgressBar1.Refresh();
+                if (e.ProgressPercentage > 100) ProgressBar1.Value = 100;
+                else ProgressBar1.Value = e.ProgressPercentage;
+                ProgressBar1.Step = 1;
+                ProgressBar1.Style = ProgressBarStyle.Continuous;
+                ProgressBar1.Minimum = 0;
+                ProgressBar1.Maximum = 100;
+                if (e.ProgressPercentage > 100)
+                {
+                    LblProgreso.Text = "100%";
+                    ProgressBar1.Value = ProgressBar1.Maximum;
+                }
+                else
+                {
+                    switch (e.ProgressPercentage)
+                    {
+                        case 0:
+                            if (_msg0 == 0)
+                            {
+                                TxtCommandLine.Text = "Iniciando Proceso de Lectura.." +
+                                                        Environment.NewLine + Environment.NewLine;
+                                _msg0 = 1;
+                            }
+                            break;
+                        case 5:
+                            if (_msg1 == 0)
+                            {
+                                TxtCommandLine.Text += "Generando Consulta para Procesar.." +
+                                    Environment.NewLine + Environment.NewLine;
+                                _msg1 = 1;
+                            }
+                            break;
+                        case 10:
+                            if (_msg2 == 0)
+                            {
+                                TxtCommandLine.Text += "Procesando Operaciones..." + Environment.NewLine + Environment.NewLine;
+                                _msg2 = 1;
+                            }
+                            break;
+                        case 20:
+                            if (_msg3 == 0)
+                            {
+                                TxtCommandLine.Text += "Validando Datos..." + Environment.NewLine + Environment.NewLine;
+                                _msg3 = 1;
+                            }
+                            break;
+                        case 50:
+                            if (_msg4 == 0)
+                            {
+                                TxtCommandLine.Text += "Calculando espacio en BDD..." + Environment.NewLine + Environment.NewLine;
+                                _msg4 = 1;
+                            }
+                            break;
+                        case 70:
+                            if (_msg5 == 0)
+                            {
+                                TxtCommandLine.Text += "Inciando Registros..." + Environment.NewLine + Environment.NewLine;
+                                _msg5 = 1;
+                            }
+                            break;
+                        case 90:
+                            if (_msg6 == 0)
+                            {
+                                TxtCommandLine.Text += "Espere Finalizando Proceso..." + Environment.NewLine + Environment.NewLine;
+                                _msg6 = 1;
+                            }
+                            break;
+                    }
+                    ProgressBar1.Value = ProgressBar1.Maximum;
+                    LblProceso.Text = "Registros " + contador.ToString() + " De " + totalprocesar.ToString();
+                    LblProgreso.Text = Convert.ToString(e.ProgressPercentage) + "%";
+                    ProgressBar1.Value = e.ProgressPercentage;
 
+                    using (Graphics gr = ProgressBar1.CreateGraphics())
+                    {
+                        gr.DrawString(e.ProgressPercentage.ToString() + "%", SystemFonts.DefaultFont,
+                            Brushes.Black, new PointF(ProgressBar1.Width / 2 - (gr.MeasureString(e.ProgressPercentage.ToString() + "%",
+                            SystemFonts.DefaultFont).Width / 2.0F), ProgressBar1.Height / 2 - (gr.MeasureString(e.ProgressPercentage.ToString() + "%",
+                            SystemFonts.DefaultFont).Height / 2.0F)));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "GS-BPO", MessageBoxButtons.OK);
+            }
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-
+            try
+            {
+                MessageBox.Show("Se han procesado: " + contador.ToString() + " Registros", "PRESTASALUD ", MessageBoxButtons.OK);
+                LblProgreso.Text = "%";
+                ProgressBar1.Value = 0;
+                bg.DoWork -= backgroundWorker1_DoWork;
+                bg.RunWorkerCompleted -= backgroundWorker1_RunWorkerCompleted;
+                dts.Clear();
+                dts.Tables.Remove(dtbdatos);
+                progreso = 0;
+                totalprocesar = 0;
+                contador = 0;
+                registros = 0;
+                LblProceso.Text = "Registros 0";
+                ProgressBar1.Value = 0;
+                TxtCommandLine.Text = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "GS-BPO", MessageBoxButtons.OK);
+            }
         }
+
+
     }
 }
