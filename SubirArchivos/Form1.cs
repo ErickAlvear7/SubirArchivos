@@ -13,12 +13,13 @@ namespace SubirArchivos
     public partial class Form1 : Form
     {
         string coneccionString = ConfigurationManager.ConnectionStrings["ConexionBDD"].ConnectionString;
-        string rutaarchivo = ConfigurationManager.AppSettings["RutaArchivo"];
+        string rutaarchivo = "C:\\subir\\"; //ConfigurationManager.AppSettings["RutaArchivo"];
         int errores = 0;
         string rutaLog = "";
         string name = "";
         string _mensaje = "";
         DataSet dtx = new DataSet();
+        int nuevo = 0;
         public Form1()
         {
             InitializeComponent();
@@ -26,8 +27,8 @@ namespace SubirArchivos
 
         private void txtRutaArchivo_MouseClick(object sender, MouseEventArgs e)
         {
-            DateTime fechaname = DateTime.Now;
-            name = fechaname.Day.ToString("00") + fechaname.Month.ToString("00") + fechaname.Year.ToString("0000") + ".csv";
+            DateTime fechaActual = DateTime.Now;
+            name = fechaActual.Day.ToString("00") + fechaActual.Month.ToString("00") + fechaActual.Year.ToString("0000") + ".csv";
 
             openDialog.InitialDirectory = @"C:\subir";
             openDialog.RestoreDirectory = true;
@@ -51,10 +52,10 @@ namespace SubirArchivos
                 string _resultado = new Conexion().FunDesactivarTitulares(coneccionString);
 
                 //string rutaCompleta = "D:\\subir\\VSP_23102024.csv";
-                //DateTime fechaname = DateTime.Now;
+                 DateTime fechaname = DateTime.Now;
                 //name = fechaname.Day.ToString("00") + fechaname.Month.ToString("00") + fechaname.Year.ToString("0000") + ".csv";
                 //string rutaCompleta = rutaarchivo + "\\" + "VSP_" + name;
-                //rutaLog = rutaarchivo + "\\" + "LOG_" + fechaname.Day.ToString("00") + fechaname.Month.ToString("00") + fechaname.Year.ToString("0000") + ".txt";
+                rutaLog = rutaarchivo + "\\" + "LOG_" + fechaname.Day.ToString("00") + fechaname.Month.ToString("00") + fechaname.Year.ToString("0000") + ".txt";
 
                 if (File.Exists(txtRutaArchivo.Text))
                 {
@@ -78,15 +79,21 @@ namespace SubirArchivos
                         Leer.Close();
 
                         //MessageBox.Show("Filas Insertadas " + next.ToString());
-                        richTextBox.AppendText(next.ToString());
+                        txtInsert.Text = next.ToString();
                         dtx= new Conexion().FunEstadoTitulares(coneccionString);
                         string estActivo = dtx.Tables[0].Rows[0][0].ToString();
-                        richTextBox1.AppendText(estActivo);
+                        txtActivos.Text = estActivo;
+                        int sumaActivos = int.Parse(dtx.Tables[0].Rows[0][0].ToString());
                         string estInactivo = dtx.Tables[1].Rows[0][0].ToString();
-                        richTextBox2.AppendText(estInactivo);
+                        txtInactivos.Text = estInactivo;
+                        int Sumainactivos = int.Parse(dtx.Tables[1].Rows[0][0].ToString());
+                        int suma = sumaActivos + Sumainactivos;
+                        string totalbase = Convert.ToString(suma);
+                        txtTotal.Text = totalbase;
+                        txtNuevos.Text = nuevo.ToString();
                     }
 
-                    FunEnviarMail(rutaLog);
+                    //FunEnviarMail(rutaLog);
                 }
             }
             catch (Exception ex)
@@ -159,16 +166,21 @@ namespace SubirArchivos
                     string _respuesta = new Conexion().InsertPersona(Cedula, Nombre1, Nombre2, Apellido1, Apellido2, Genero, Direccion,
                             Nacimiento, TelCasa, TelOfi, Celular, Email, Tipocliente, Parentesco, FechaIniCober, FechaFinCober, TipoPolisa, codProd, coneccionString);
 
-                    if(_respuesta != "OK")
+                    if(_respuesta != "NUEVO" || _respuesta != "ACTUALIZADO")
                     {
                         FunCrearTXT(rutaLog, Cedula, nombrescompletos, _respuesta);
+                    }
+
+                    if(_respuesta == "NUEVO")
+                    {
+                        nuevo++;
                     }
 
                 }
             }
             catch (Exception ex)
             {                
-                FunCrearTXT(rutaLog, Cedula, nombrescompletos, "ERROR EN EL CATCH");
+                FunCrearTXT(rutaLog, Cedula, nombrescompletos, "ERROR FUN_GRABAR_DATA");
                 //MessageBox.Show(ex.ToString());
             }
         }
@@ -198,7 +210,7 @@ namespace SubirArchivos
                 {
                     string body = "Adjunto errores, Revisar El archivo : " + "VSP_" + name;
 
-                    string _mensaje = SendHtmlEmail("cfam2212@gmail.com", "ealvear@prestasalud.com", "ERRORES - ARCHIVO DE CARGA DE NOVA", body, _host, int.Parse(_port), bool.Parse(_enablessl), _user, _pass, rutalog, ePathLogo,
+                    string _mensaje = SendHtmlEmail("vroldan@prestasalud.com", "ealvear@prestasalud.com", "ERRORES - ARCHIVO DE CARGA DE NOVA", body, _host, int.Parse(_port), bool.Parse(_enablessl), _user, _pass, rutalog, ePathLogo,
                         ePathBody);
                 }
                 catch (Exception ex)
@@ -217,19 +229,6 @@ namespace SubirArchivos
                 {
                     Attachment archivo = new Attachment(pathAttach);
                     AlternateView htmlView = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
-                    /*LinkedResource ImageLogo = new LinkedResource(pathLogo);
-                    {
-                        ImageLogo.ContentId = "myLogo";
-                    }
-
-                    LinkedResource ImageBody = new LinkedResource(pathBody);
-                    {
-                        ImageBody.ContentId = "myBody";
-                    }
-                    */
-
-                    //htmlView.LinkedResources.Add(ImageLogo);
-                    //htmlView.LinkedResources.Add(ImageBody);
                     mailMessage.AlternateViews.Add(htmlView);
                     mailMessage.From = new MailAddress(eusername);
                     mailMessage.Subject = subject;
@@ -239,11 +238,6 @@ namespace SubirArchivos
 
                     if (!string.IsNullOrEmpty(mail1))
                     {
-                        //string[] manyMails = mailTO.Split(',');
-                        //foreach (string toMails in manyMails)
-                        //{
-                        //    mailMessage.To.Add(new MailAddress(toMails));
-                        //}
                         mailMessage.To.Add(new MailAddress(mail1));
                     }
 
@@ -273,7 +267,7 @@ namespace SubirArchivos
                 catch (Exception ex)
                 {
                     _mensaje = ex.Message;
-                    //funCrearLogAuditoria(1, "Envío Mail", mensaje, 1);
+                  
                 }
                 return _mensaje;
             }

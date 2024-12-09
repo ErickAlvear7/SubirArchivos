@@ -75,7 +75,7 @@ namespace SubirArchivos
                         da.Fill(ds);
                     }
                 }
-                return "OK";
+                return ds.Tables[0].Rows[0][0].ToString();
             }
             catch (Exception ex)
             {
