@@ -104,19 +104,6 @@ namespace SubirArchivos
                             bg.RunWorkerAsync();
                         }
 
-                           
-                        //txtInsert.Text = next.ToString();
-                        //dtx= new Conexion().FunEstadoTitulares(coneccionString);
-                        //string estActivo = dtx.Tables[0].Rows[0][0].ToString();
-                        //txtActivos.Text = estActivo;
-                        //int sumaActivos = int.Parse(dtx.Tables[0].Rows[0][0].ToString());
-                        //string estInactivo = dtx.Tables[1].Rows[0][0].ToString();
-                        //txtInactivos.Text = estInactivo;
-                        //int Sumainactivos = int.Parse(dtx.Tables[1].Rows[0][0].ToString());
-                        //int suma = sumaActivos + Sumainactivos;
-                        //string totalbase = Convert.ToString(suma);
-                        //txtTotal.Text = totalbase;
-                        //txtNuevos.Text = nuevo.ToString();
                     }
 
                     //FunEnviarMail(rutaLog);
