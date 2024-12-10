@@ -436,7 +436,7 @@ namespace SubirArchivos
                                 _msg2 = 1;
                             }
                             break;
-                        case 90:
+                        case 95:
                             if (_msg3 == 0)
                             {
                                 TxtCommandLine.Text += "Finalizando Proceso..." + Environment.NewLine + Environment.NewLine;

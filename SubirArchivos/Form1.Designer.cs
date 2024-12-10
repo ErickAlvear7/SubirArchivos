@@ -55,7 +55,7 @@ namespace SubirArchivos
             this.btnProcesar.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.btnProcesar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnProcesar.Location = new System.Drawing.Point(29, 120);
-            this.btnProcesar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnProcesar.Margin = new System.Windows.Forms.Padding(2);
             this.btnProcesar.Name = "btnProcesar";
             this.btnProcesar.Size = new System.Drawing.Size(110, 66);
             this.btnProcesar.TabIndex = 0;
@@ -211,11 +211,11 @@ namespace SubirArchivos
             // 
             this.TxtCommandLine.BackColor = System.Drawing.SystemColors.ControlLight;
             this.TxtCommandLine.ForeColor = System.Drawing.Color.Black;
-            this.TxtCommandLine.Location = new System.Drawing.Point(387, 277);
+            this.TxtCommandLine.Location = new System.Drawing.Point(387, 265);
             this.TxtCommandLine.Multiline = true;
             this.TxtCommandLine.Name = "TxtCommandLine";
             this.TxtCommandLine.ReadOnly = true;
-            this.TxtCommandLine.Size = new System.Drawing.Size(170, 85);
+            this.TxtCommandLine.Size = new System.Drawing.Size(170, 105);
             this.TxtCommandLine.TabIndex = 66;
             // 
             // LblProceso
@@ -252,7 +252,7 @@ namespace SubirArchivos
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtRutaArchivo);
             this.Controls.Add(this.btnProcesar);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "CARGAR ARCHIVO";
             this.Load += new System.EventHandler(this.Form1_Load);
