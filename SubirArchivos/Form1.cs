@@ -9,7 +9,12 @@ using System.IO;
 using System.Net.Mail;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
+using SpreadsheetLight;
+using DocumentFormat.OpenXml.Wordprocessing;
+
 
 namespace SubirArchivos
 {
@@ -28,6 +33,7 @@ namespace SubirArchivos
         DataSet dts = new DataSet();
         DataRow dtr;
         BackgroundWorker bg = new BackgroundWorker();
+        string[] _campos;
         public Form1()
         {
             InitializeComponent();
@@ -46,7 +52,7 @@ namespace SubirArchivos
             openDialog.InitialDirectory = @"C:\subir";
             openDialog.RestoreDirectory = true;
             openDialog.FilterIndex = 1;
-            openDialog.Filter = "csv files (*.csv)|*.csv";
+            openDialog.Filter = "excel files (*.xlsx)|*.xlsx";
             openDialog.FileName = "VSP_" + name;
 
             if(openDialog.ShowDialog() == DialogResult.OK)
@@ -72,8 +78,51 @@ namespace SubirArchivos
 
                 if (File.Exists(txtRutaArchivo.Text))
                 {
+
+                    string path = txtRutaArchivo.Text;
+                    SLDocument sl = new SLDocument(path);
+
+                    Array.Resize(ref _campos, 18);
+
+                    int _next = 2;
+
+                    while (!string.IsNullOrEmpty(sl.GetCellValueAsString(_next, 1)))
+                    {
+
+                        if (_next > 1)
+                        {
+                            int _coldoc = 1;
+                            int _row = 0;
+
+                            for (_coldoc = 1; _coldoc <= 18; _coldoc++)
+                            {
+                                _campos[_row] = FunEspaciosSaltosLinea(sl.GetCellValueAsString(_next, _coldoc));
+                                _row++;
+
+                            }
+
+                            dtbdatos = FunGrabarDataTable(_campos);
+                        }
+
+                        _next++;
+                    }
+
+                    dts.Tables.Add(dtbdatos);
+                    
+                    if (dts.Tables[0].Rows.Count > 0)
+                    {
+                        registros = dts.Tables[0].Rows.Count;
+
+                        bg.WorkerReportsProgress = true;
+                        bg.ProgressChanged += backgroundWorker1_ProgressChanged;
+                        bg.DoWork += backgroundWorker1_DoWork;
+                        bg.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
+                        bg.RunWorkerAsync();
+                    }
+
+
                     //string ext = Path.GetExtension(rutaCompleta);
-                    using (StreamReader Leer = new StreamReader(txtRutaArchivo.Text))
+                    /*using (StreamReader Leer = new StreamReader(txtRutaArchivo.Text))
                     {
                         String Linea;
                         int next = 0;
@@ -104,7 +153,7 @@ namespace SubirArchivos
                             bg.RunWorkerAsync();
                         }
 
-                    }
+                    }*/
 
                     //FunEnviarMail(rutaLog);
                 }
@@ -181,7 +230,7 @@ namespace SubirArchivos
                 DataSet ds = new Conexion().FunConsultarId(Producto, coneccionString);
                 int codProd = int.Parse(ds.Tables[0].Rows[0][0].ToString());
 
-                if (codProd == 0)
+                if (codProd == -99)
                 {
                     continuar = 0;
                 }
@@ -202,6 +251,10 @@ namespace SubirArchivos
                     }
 
                 }
+                else
+                {
+                    FunCrearTXT(rutaLog, Cedula, nombrescompletos, "PRODUCTO NO EXISTE");
+                }
             }
             catch (Exception ex)
             {                
@@ -212,10 +265,25 @@ namespace SubirArchivos
         protected void FunCrearTXT(string ruta, string cedula, string nombres, string mensaje )
         {
             errores++;
-            StreamWriter escribir = File.AppendText(ruta);
-            escribir.WriteLine("CEDULA" + "|" + "NOMBRES" + "|" + "ERROR" );
-            escribir.WriteLine(cedula + "|" + nombres + "|" + mensaje);
-            escribir.Close();
+
+            if (File.Exists(ruta)) 
+            {
+                StreamWriter escribir = File.AppendText(ruta);
+                escribir.WriteLine("CEDULA" + "|" + "NOMBRES" + "|" + "ERROR");
+                escribir.WriteLine(cedula + "|" + nombres + "|" + mensaje);
+                escribir.Close();
+
+            }
+            else
+            {
+                string nuevoDirectorio = @"C:\subir";
+                Directory.CreateDirectory(nuevoDirectorio);
+                StreamWriter escribir = File.AppendText(ruta);
+                escribir.WriteLine("CEDULA" + "|" + "NOMBRES" + "|" + "ERROR");
+                escribir.WriteLine(cedula + "|" + nombres + "|" + mensaje);
+                escribir.Close();
+            }
+
         }
 
         protected void FunEnviarMail(string rutalog)
@@ -352,7 +420,7 @@ namespace SubirArchivos
                 DataSet ds = new Conexion().FunConsultarId(Producto, coneccionString);
                 int codProd = int.Parse(ds.Tables[0].Rows[0][0].ToString());
 
-                if (codProd == 0)
+                if (codProd == -99)
                 {
                     continuar = 0;
                 }
@@ -362,7 +430,7 @@ namespace SubirArchivos
                     string _respuesta = new Conexion().InsertPersona(Cedula, Nombre1, Nombre2, Apellido1, Apellido2, Genero, Direccion,
                             Nacimiento, TelCasa, TelOfi, Celular, Email, Tipocliente, Parentesco, FechaIniCober, FechaFinCober, TipoPolisa, codProd, coneccionString);
 
-                    if (_respuesta != "NUEVO" || _respuesta != "ACTUALIZADO")
+                    if (_respuesta == "PROBLEMA EN LA BASE")
                     {
                         FunCrearTXT(rutaLog, Cedula, nombrescompletos, _respuesta);
                     }
@@ -372,6 +440,10 @@ namespace SubirArchivos
                         nuevo++;
                     }
 
+                }
+                else
+                {
+                    FunCrearTXT(rutaLog, Cedula, nombrescompletos, "ERROR EN EL PRODUCTO --" + Producto);
                 }
                 progreso++;
                 porciento = Convert.ToInt16((((double)progreso / (double)totalprocesar) * 100.00));
@@ -489,7 +561,19 @@ namespace SubirArchivos
                 MessageBox.Show(ex.ToString(), "GS-BPO", MessageBoxButtons.OK);
             }
         }
+        private string FunEspaciosSaltosLinea(string valor)
+        {
+            string _resultado = valor.Replace("?", "").Replace("#", "").Replace("¥", "").
+                            Replace("¤", "").Replace("}", "").Replace("[", "").Replace("]", "").
+                            Replace("*", "").Replace("¡", "").Replace("¿", "").Replace("&", "").
+                            Replace("´", "").Replace("�", "").Replace("\"", "");
+
+            _resultado = valor.Replace("\r\n", string.Empty);
+
+            return _resultado.Trim().TrimStart().TrimEnd();
+        }
 
 
     }
+
 }
