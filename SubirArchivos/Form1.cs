@@ -1,19 +1,13 @@
-﻿using Microsoft.Win32;
+﻿using SpreadsheetLight;
 using System;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net.Mail;
 using System.Threading;
 using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
-using SpreadsheetLight;
-using DocumentFormat.OpenXml.Wordprocessing;
 
 
 namespace SubirArchivos
@@ -68,7 +62,7 @@ namespace SubirArchivos
             {
                 //DESACTIVAR TODOS LOS TITUALRES DE ESE PRODUCTO
 
-                string _resultado = new Conexion().FunDesactivarTitulares(coneccionString);
+                //string _resultado = new Conexion().FunDesactivarTitulares(coneccionString);
 
                 //string rutaCompleta = "D:\\subir\\VSP_23102024.csv";
                  DateTime fechaname = DateTime.Now;
@@ -96,7 +90,7 @@ namespace SubirArchivos
 
                             for (_coldoc = 1; _coldoc <= 18; _coldoc++)
                             {
-                                _campos[_row] = FunEspaciosSaltosLinea(sl.GetCellValueAsString(_next, _coldoc));
+                                _campos[_row] = FunEspaciosSaltosLinea(sl.GetCellValueAsString(_next, _coldoc));                                
                                 _row++;
 
                             }
@@ -211,21 +205,21 @@ namespace SubirArchivos
 
                 int continuar = 1;
 
-                int carcater = Cedula.Length;
-                if (carcater == 9)
-                {
-                    Cedula = '0' + Cedula;
-                }
-                int carcac = Celular.Length;
-                if (carcac == 9)
-                {
-                    Celular = '0' + Celular;
-                }
+                //int carcater = Cedula.Length;
+                //if (carcater == 9)
+                //{
+                //    Cedula = '0' + Cedula;
+                //}
+                //int carcac = Celular.Length;
+                //if (carcac == 9)
+                //{
+                //    Celular = '0' + Celular;
+                //}
 
-                if (carcater == 0)
-                {
-                    continuar = 0;
-                }
+                //if (carcater == 0)
+                //{
+                //    continuar = 0;
+                //}
 
                 DataSet ds = new Conexion().FunConsultarId(Producto, coneccionString);
                 int codProd = int.Parse(ds.Tables[0].Rows[0][0].ToString());
@@ -401,21 +395,21 @@ namespace SubirArchivos
 
                 int continuar = 1;
 
-                int carcater = Cedula.Length;
-                if (carcater == 9)
-                {
-                    Cedula = '0' + Cedula;
-                }
-                int carcac = Celular.Length;
-                if (carcac == 9)
-                {
-                    Celular = '0' + Celular;
-                }
+                //int carcater = Cedula.Length;
+                //if (carcater == 9)
+                //{
+                //    Cedula = '0' + Cedula;
+                //}
+                //int carcac = Celular.Length;
+                //if (carcac == 9)
+                //{
+                //    Celular = '0' + Celular;
+                //}
 
-                if (carcater == 0)
-                {
-                    continuar = 0;
-                }
+                //if (carcater == 0)
+                //{
+                //    continuar = 0;
+                //}
 
                 DataSet ds = new Conexion().FunConsultarId(Producto, coneccionString);
                 int codProd = int.Parse(ds.Tables[0].Rows[0][0].ToString());
@@ -529,7 +523,7 @@ namespace SubirArchivos
             {
 
                 txtInsert.Text = contador.ToString();
-                dtx = new Conexion().FunEstadoTitulares(coneccionString);
+                dtx = new Conexion().FunEstadoTitulares(coneccionString); 
                 string estActivo = dtx.Tables[0].Rows[0][0].ToString();
                 txtActivos.Text = estActivo;
                 int sumaActivos = int.Parse(dtx.Tables[0].Rows[0][0].ToString());

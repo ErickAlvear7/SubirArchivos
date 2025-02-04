@@ -38,6 +38,7 @@ namespace SubirArchivos
             }
         }
 
+
         public string InsertPersona(string cedula,string nombre1,string nombre2,string apellido1,string apellido2,
             string genero,string direccion,string nacimiento,string telcasa,string telofi,string celular,
             string email,string tipocliente,string parentesco,string fechainico,string fechafinco,string tipopolisa,int codpro,string conexion)
@@ -51,7 +52,7 @@ namespace SubirArchivos
                         comm.Connection = con;
                         comm.CommandType = CommandType.StoredProcedure;
                         comm.CommandText = "sp_InsertarPersonaTitular";
-                        comm.Parameters.AddWithValue("@in_tipo", 0);
+                        comm.Parameters.AddWithValue("@in_tipo", 1);
                         comm.Parameters.AddWithValue("@in_cedula", cedula);
                         comm.Parameters.AddWithValue("@in_nombre1", nombre1);
                         comm.Parameters.AddWithValue("@in_nombre2", nombre2);
@@ -125,7 +126,7 @@ namespace SubirArchivos
                         comm.CommandText = "sp_ConsultaDatos";
                         comm.Parameters.AddWithValue("@in_codigo", 0);
                         comm.Parameters.AddWithValue("@in_tCodigo", "");
-                        comm.Parameters.AddWithValue("@in_tipo", 179);
+                        comm.Parameters.AddWithValue("@in_tipo", 186);
 
                         con.Open();
                         da.SelectCommand = comm;
