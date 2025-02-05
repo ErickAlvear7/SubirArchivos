@@ -59,7 +59,7 @@ namespace SubirArchivos
             this.btnProcesar.Name = "btnProcesar";
             this.btnProcesar.Size = new System.Drawing.Size(110, 66);
             this.btnProcesar.TabIndex = 0;
-            this.btnProcesar.Text = "PROCESAR CSV";
+            this.btnProcesar.Text = "SUBIR XLS PRODEM";
             this.btnProcesar.UseVisualStyleBackColor = false;
             this.btnProcesar.Click += new System.EventHandler(this.btnProcesar_Click);
             // 
@@ -233,7 +233,7 @@ namespace SubirArchivos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.BackColor = System.Drawing.Color.Gray;
             this.ClientSize = new System.Drawing.Size(618, 384);
             this.Controls.Add(this.LblProceso);
             this.Controls.Add(this.TxtCommandLine);
