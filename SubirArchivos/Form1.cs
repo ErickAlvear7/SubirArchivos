@@ -90,7 +90,17 @@ namespace SubirArchivos
 
                             for (_coldoc = 1; _coldoc <= 18; _coldoc++)
                             {
-                                _campos[_row] = FunEspaciosSaltosLinea(sl.GetCellValueAsString(_next, _coldoc));                                
+                                if(_coldoc == 8)
+                                {
+                                    //string valor = FunEspaciosSaltosLinea(sl.GetCellValueAsString(_next, _coldoc));
+                                    _campos[_row] = "10/10/1991";
+                                }
+                                else
+                                {
+                                    _campos[_row] = FunEspaciosSaltosLinea(sl.GetCellValueAsString(_next, _coldoc));
+                                }
+
+                                
                                 _row++;
 
                             }
